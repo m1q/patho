@@ -1,409 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bone Pathology Study Portal</title>
+    <title>بوابة علم الأمراض | Pathology Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
+        body { font-family: 'Cairo', sans-serif; }
         
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Quiz Image "Cropping" Effect */
-        .quiz-image-container {
-            position: relative;
-            overflow: hidden;
-            background: #0f172a;
-            border-radius: 1rem;
-            aspect-ratio: 16 / 9;
+        .card-gradient {
+            background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
         }
-
-        /* This targets images in the quiz to zoom in on the pathology/X-ray 
-           and hide top/bottom text bars commonly found in slides */
-        .quiz-zoom-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            transform: scale(1.15); /* Zoom in to crop edges */
-            filter: contrast(1.05);
+        .lecture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
-
-        .dot-active { background-color: white !important; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="bg-slate-50 text-slate-900 min-h-screen">
 
-    <nav class="bg-white border-b sticky top-0 z-30 shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="showView('landing')">
-                <div class="bg-indigo-600 p-2 rounded-lg text-white">
-                    <i class="fa-solid fa-microscope"></i>
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 p-2.5 rounded-xl text-white shadow-lg shadow-indigo-200">
+                    <i class="fa-solid fa-book-medical text-xl"></i>
                 </div>
-                <span class="font-bold text-xl text-slate-900">PathologyPro</span>
+                <div>
+                    <h1 class="font-black text-xl tracking-tight">بوابة علم الأمراض</h1>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Medical Pathology Portal</p>
+                </div>
             </div>
-            <div class="flex gap-4">
-                <button onclick="showView('study')" class="p-2 px-3 rounded-md hover:bg-slate-100 transition"><i class="fa-solid fa-graduation-cap"></i></button>
-                <button onclick="startQuiz('image')" class="p-2 px-3 rounded-md hover:bg-slate-100 transition"><i class="fa-solid fa-vial"></i></button>
+            <div class="hidden md:flex items-center gap-6 text-sm font-bold text-slate-500">
+                <a href="#" class="hover:text-indigo-600 transition">الرئيسية</a>
+                <a href="#" class="hover:text-indigo-600 transition">عن المساق</a>
+                <a href="#" class="hover:text-indigo-600 transition">المصادر</a>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <main id="app-content" class="max-w-6xl mx-auto px-4 py-6">
-        <!-- Content Injected Here -->
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        <!-- Welcome Section -->
+        <div class="mb-12 text-center md:text-right">
+            <h2 class="text-4xl font-black text-slate-900 mb-4">مرحباً بك في الأرشيف التعليمي</h2>
+            <p class="text-slate-500 max-w-2xl text-lg leading-relaxed">
+                اختر المحاضرة المطلوبة للوصول إلى المحتوى التعليمي، الصور التشخيصية، والاختبارات التفاعلية الخاصة بكل وحدة.
+            </p>
+        </div>
+
+        <!-- Lectures Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Lecture 1 -->
+            <a href="lec1.html" class="lecture-card group bg-white border border-slate-200 p-6 rounded-[2rem] transition-all duration-300">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-bone"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-slate-300 uppercase">Module 01</span>
+                </div>
+                <h3 class="text-xl font-black mb-2">المحاضرة الأولى</h3>
+                <p class="text-slate-500 text-sm mb-4">أورام العظام الحميدة والخبيثة وتشخيصها الشعاعي.</p>
+                <div class="flex items-center gap-2 text-blue-600 font-bold text-xs">
+                    <span>عرض المحتوى</span>
+                    <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                </div>
+            </a>
+
+            <!-- Lecture 2 -->
+            <a href="lec2.html" class="lecture-card group bg-white border border-slate-200 p-6 rounded-[2rem] transition-all duration-300">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-joint"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-slate-300 uppercase">Module 02</span>
+                </div>
+                <h3 class="text-xl font-black mb-2">المحاضرة الثانية</h3>
+                <p class="text-slate-500 text-sm mb-4">التهاب المفاصل التنكسي (Osteoarthritis) وتغيرات الغضاريف.</p>
+                <div class="flex items-center gap-2 text-indigo-600 font-bold text-xs">
+                    <span>عرض المحتوى</span>
+                    <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                </div>
+            </a>
+
+            <!-- Lecture 3 (Placeholder) -->
+            <div class="lecture-card opacity-60 bg-slate-100 border border-dashed border-slate-300 p-6 rounded-[2rem] cursor-not-allowed">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-14 h-14 bg-slate-200 text-slate-400 rounded-2xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-slate-300 uppercase">Module 03</span>
+                </div>
+                <h3 class="text-xl font-black mb-2 text-slate-400">المحاضرة الثالثة</h3>
+                <p class="text-slate-400 text-sm mb-4">محتوى قيد التجهيز من قبل القسم الأكاديمي.</p>
+            </div>
+
+            <!-- Lecture 4 (Placeholder) -->
+            <div class="lecture-card opacity-60 bg-slate-100 border border-dashed border-slate-300 p-6 rounded-[2rem] cursor-not-allowed">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-14 h-14 bg-slate-200 text-slate-400 rounded-2xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-slate-300 uppercase">Module 04</span>
+                </div>
+                <h3 class="text-xl font-black mb-2 text-slate-400">المحاضرة الرابعة</h3>
+                <p class="text-slate-400 text-sm mb-4">محتوى قيد التجهيز قريباً.</p>
+            </div>
+
+            <!-- Lecture 5 (Placeholder) -->
+            <div class="lecture-card opacity-60 bg-slate-100 border border-dashed border-slate-300 p-6 rounded-[2rem] cursor-not-allowed">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-14 h-14 bg-slate-200 text-slate-400 rounded-2xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-slate-300 uppercase">Module 05</span>
+                </div>
+                <h3 class="text-xl font-black mb-2 text-slate-400">المحاضرة الخامسة</h3>
+                <p class="text-slate-400 text-sm mb-4">محتوى قيد التجهيز قريباً.</p>
+            </div>
+
+            <!-- Lecture 6 (Placeholder) -->
+            <div class="lecture-card opacity-60 bg-slate-100 border border-dashed border-slate-300 p-6 rounded-[2rem] cursor-not-allowed">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-14 h-14 bg-slate-200 text-slate-400 rounded-2xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-slate-300 uppercase">Module 06</span>
+                </div>
+                <h3 class="text-xl font-black mb-2 text-slate-400">المحاضرة السادسة</h3>
+                <p class="text-slate-400 text-sm mb-4">محتوى قيد التجهيز قريباً.</p>
+            </div>
+
+        </div>
+
+        <!-- Footer Info -->
+        <footer class="mt-20 border-t border-slate-200 pt-8 text-center text-slate-400 text-xs">
+            <p>© 2026 جميع الحقوق محفوظة - نظام التعلم الذكي للباثولوجيا</p>
+        </footer>
     </main>
 
-    <script>
-        const diseaseData = [
-            {
-                id: "osteoid-osteoma",
-                name: "Osteoid Osteoma",
-                category: "Bone-forming tumor",
-                benign_malignant: "benign",
-                age_group: "young men / adolescents",
-                locations: "cortex of long bones, femur, tibia",
-                symptoms: "Pain classically worse at night; relieved by aspirin/NSAIDs.",
-                radiology: "Small lesion < 2cm with reactive cortical thickening; nidus present.",
-                summary_ar: "ورم عظمي حميد مُنتِج للعظم، صغير < 2 سم. الألم يتحسن مع الأسبرين.",
-                key_points: ["حميد", "صغير الحجم", "ألم ليلي", "يستجيب للأسبرين"],
-                images: ["osteoid_osteoma_slide.jpg", "osteoid_osteoma_examples.jpg"],
-                quiz_image: "osteoid_osteoma_examples.jpg" // Use the clinical example for quiz
-            },
-            {
-                id: "osteoblastoma",
-                name: "Osteoblastoma",
-                category: "Bone-forming tumor",
-                benign_malignant: "benign",
-                age_group: "adolescents / young adults",
-                locations: "vertebral column (posterior elements)",
-                symptoms: "Dull ache, not predictably relieved by aspirin.",
-                radiology: "Greater than 2 cm, lacks heavy reactive bone formation.",
-                summary_ar: "ورم حميد يشبه السابق لكنه أكبر من 2 سم ويصيب الفقرات غالباً.",
-                key_points: ["حميد", "أكبر من 2 سم", "يصيب الفقرات"],
-                images: ["osteoblastoma_slide.jpg"],
-                quiz_image: "osteoblastoma_slide.jpg"
-            },
-            {
-                id: "osteochondroma",
-                name: "Osteochondroma",
-                category: "Cartilage-forming tumor",
-                benign_malignant: "benign",
-                age_group: "late adolescence",
-                locations: "metaphysis of long bones, knee",
-                symptoms: "Asymptomatic unless it compresses nerves.",
-                radiology: "Bony outgrowth with cartilage cap; continuous with marrow cavity.",
-                summary_ar: "أكثر أورام العظام الحميدة شيوعًا. بروز عظمي مغطى بغضروف.",
-                key_points: ["الأكثر شيوعاً", "بروز عظمي", "غلاف غضروفي"],
-                images: ["osteochondroma_text_slide.jpg", "osteochondroma_example.jpg"],
-                quiz_image: "osteochondroma_example.jpg"
-            },
-            {
-                id: "chondroblastoma",
-                name: "Chondroblastoma",
-                category: "Cartilage-forming tumor",
-                benign_malignant: "benign",
-                age_group: "young (pre-growth plate closure)",
-                locations: "epiphysis of long bones",
-                symptoms: "Joint pain and swelling.",
-                radiology: "Rare benign tumor located specifically in the epiphysis.",
-                summary_ar: "ورم حميد نادر يتميز بموقعه في الـ Epiphysis قبل انغلاق صفيحة النمو.",
-                key_points: ["نادر", "موقع محدد: Epiphysis"],
-                images: ["chondroblastoma_slide.jpg"],
-                quiz_image: "chondroblastoma_slide.jpg"
-            },
-            {
-                id: "chondrosarcoma",
-                name: "Chondrosarcoma",
-                category: "Primary malignant bone tumor",
-                benign_malignant: "malignant",
-                age_group: "older adults (40-60+)",
-                locations: "pelvis, shoulder",
-                symptoms: "Progressive pain and enlarging mass.",
-                radiology: "Malignant cartilage-producing tumor. Often popcorn calcification.",
-                summary_ar: "ورم خبيث يصيب الكبار. شائع في الحوض. يحتاج استئصال جراحي.",
-                key_points: ["خبيث", "يصيب كبار السن", "مقاوم للكيميائي غالباً"],
-                images: ["sarcoma_comparison_slide.jpg", "sarcoma_comparison_slide_2.jpg"],
-                quiz_image: "sarcoma_comparison_slide_2.jpg"
-            }
-        ];
-
-        let currentIdx = 0;
-        let quizState = null;
-
-        function showView(view) {
-            const container = document.getElementById('app-content');
-            if (view === 'landing') {
-                container.innerHTML = `
-                    <div class="py-12 flex flex-col items-center">
-                        <div class="mb-12 text-center">
-                            <h1 class="text-5xl font-black text-slate-900 mb-4">Bone Pathology Atlas</h1>
-                            <p class="text-slate-500 max-w-lg mx-auto">Master bone tumors through high-yield slides, clinical correlations, and diagnostic challenges.</p>
-                        </div>
-                        <div class="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
-                            <div onclick="showView('study')" class="group bg-white p-10 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer">
-                                <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                                    <i class="fa-solid fa-book"></i>
-                                </div>
-                                <h2 class="text-2xl font-bold mb-2">Study Center</h2>
-                                <p class="text-slate-500">Review detailed pathology slides with clinical features and Arabic summaries.</p>
-                            </div>
-                            <div onclick="startQuiz('image')" class="group bg-white p-10 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer">
-                                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                                    <i class="fa-solid fa-flask-vial"></i>
-                                </div>
-                                <h2 class="text-2xl font-bold mb-2">Diagnostic Quiz</h2>
-                                <p class="text-slate-500">Identify tumors from cropped diagnostic images without labels or text.</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } else if (view === 'study') {
-                renderStudyView();
-            }
-        }
-
-        function renderStudyView() {
-            const disease = diseaseData[currentIdx];
-            const container = document.getElementById('app-content');
-            container.innerHTML = `
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <!-- Sidebar -->
-                    <div class="lg:col-span-4 space-y-3 max-h-[85vh] overflow-y-auto no-scrollbar pr-1">
-                        ${diseaseData.map((d, i) => `
-                            <button onclick="selectDisease(${i})" class="w-full text-left p-4 rounded-2xl border-2 flex items-center gap-4 transition-all ${currentIdx === i ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg' : 'bg-white border-slate-100 hover:border-indigo-200'}">
-                                <div class="w-14 h-14 bg-slate-100 rounded-xl overflow-hidden shrink-0">
-                                    <img src="${d.quiz_image}" class="w-full h-full object-cover" onerror="this.style.display='none'">
-                                </div>
-                                <div>
-                                    <div class="font-bold text-sm">${d.name}</div>
-                                    <div class="text-[10px] uppercase font-bold tracking-widest opacity-60">${d.category}</div>
-                                </div>
-                            </button>
-                        `).join('')}
-                    </div>
-
-                    <!-- Main Viewer -->
-                    <div class="lg:col-span-8">
-                        <div class="bg-white rounded-[2rem] shadow-xl border border-slate-200 overflow-hidden">
-                            <!-- Swiper Area -->
-                            <div class="relative group">
-                                <div id="study-track" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar aspect-video bg-slate-950 items-center">
-                                    ${disease.images.map(img => `
-                                        <div class="min-w-full h-full snap-center flex justify-center items-center relative">
-                                            <img src="${img}" class="max-w-full max-h-full object-contain" onerror="handleImageError(this)">
-                                        </div>
-                                    `).join('')}
-                                </div>
-                                
-                                ${disease.images.length > 1 ? `
-                                    <button onclick="scrollStudy(-1)" class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white w-12 h-12 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center">
-                                        <i class="fa-solid fa-chevron-left"></i>
-                                    </button>
-                                    <button onclick="scrollStudy(1)" class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white w-12 h-12 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center">
-                                        <i class="fa-solid fa-chevron-right"></i>
-                                    </button>
-                                ` : ''}
-                            </div>
-
-                            <div class="p-8">
-                                <div class="flex justify-between items-start mb-8">
-                                    <div>
-                                        <h2 class="text-4xl font-black text-slate-900">${disease.name}</h2>
-                                        <p class="text-indigo-600 font-bold uppercase tracking-widest text-xs mt-2">${disease.category}</p>
-                                    </div>
-                                    <span class="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest ${disease.benign_malignant === 'malignant' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600'}">
-                                        ${disease.benign_malignant}
-                                    </span>
-                                </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                                    <div class="space-y-6">
-                                        <div class="flex gap-4">
-                                            <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-people-group"></i></div>
-                                            <div>
-                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Demographics</span>
-                                                <p class="text-slate-700 font-medium">${disease.age_group}</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex gap-4">
-                                            <div class="w-10 h-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-map-pin"></i></div>
-                                            <div>
-                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Locations</span>
-                                                <p class="text-slate-700 font-medium">${disease.locations}</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex gap-4">
-                                            <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-comment-medical"></i></div>
-                                            <div>
-                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Symptoms</span>
-                                                <p class="text-slate-600 text-sm leading-relaxed">${disease.symptoms}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="bg-slate-900 text-white p-6 rounded-3xl" dir="rtl">
-                                        <div class="flex items-center gap-2 mb-4">
-                                            <div class="w-2 h-6 bg-indigo-500 rounded-full"></div>
-                                            <h4 class="font-bold text-lg">ملخص التشخيص</h4>
-                                        </div>
-                                        <p class="text-slate-300 text-sm leading-relaxed mb-6">${disease.summary_ar}</p>
-                                        <div class="grid grid-cols-1 gap-2">
-                                            ${disease.key_points.map(kp => `<div class="bg-white/5 p-2 rounded-lg text-xs flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> ${kp}</div>`).join('')}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function scrollStudy(dir) {
-            const track = document.getElementById('study-track');
-            track.scrollBy({ left: dir * track.offsetWidth, behavior: 'smooth' });
-        }
-
-        function selectDisease(index) {
-            currentIdx = index;
-            renderStudyView();
-        }
-
-        function handleImageError(img) {
-            img.style.display = 'none';
-            const parent = img.parentElement;
-            parent.innerHTML = `
-                <div class="flex flex-col items-center justify-center text-slate-500 gap-3">
-                    <i class="fa-solid fa-image text-3xl opacity-20"></i>
-                    <span class="text-[10px] font-mono opacity-50 uppercase">${img.src.split('/').pop()}</span>
-                </div>
-            `;
-        }
-
-        function startQuiz(type) {
-            const shuffled = [...diseaseData].sort(() => 0.5 - Math.random());
-            quizState = {
-                questions: shuffled.map(d => ({
-                    correctId: d.id,
-                    image: d.quiz_image,
-                    options: [...diseaseData].sort(() => 0.5 - Math.random()).slice(0, 4)
-                })),
-                current: 0,
-                score: 0,
-                answered: false
-            };
-            
-            // Fix options to always include correct answer
-            quizState.questions.forEach(q => {
-                if (!q.options.some(o => o.id === q.correctId)) {
-                    q.options[Math.floor(Math.random() * 4)] = diseaseData.find(d => d.id === q.correctId);
-                }
-            });
-            
-            renderQuiz();
-        }
-
-        function renderQuiz() {
-            const q = quizState.questions[quizState.current];
-            const container = document.getElementById('app-content');
-            container.innerHTML = `
-                <div class="max-w-3xl mx-auto">
-                    <div class="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden">
-                        <div class="h-1.5 bg-slate-100">
-                            <div class="h-full bg-indigo-600 transition-all duration-700" style="width:${((quizState.current + 1) / quizState.questions.length) * 100}%"></div>
-                        </div>
-                        
-                        <div class="p-10">
-                            <div class="flex justify-between items-center mb-8">
-                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Diagnostic Case ${quizState.current + 1} of ${quizState.questions.length}</span>
-                                <div class="px-4 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-black">SCORE: ${quizState.score}</div>
-                            </div>
-
-                            <h3 class="text-2xl font-black text-slate-800 mb-8">Identify the pathology based on this diagnostic area:</h3>
-
-                            <!-- Cropped Quiz Image -->
-                            <div class="quiz-image-container mb-10 shadow-2xl ring-4 ring-slate-50">
-                                <img src="${q.image}" class="quiz-zoom-img" onerror="handleImageError(this)">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
-                                <div class="absolute top-4 left-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[9px] text-white font-black uppercase tracking-widest">Diagnostic View (Cropped)</div>
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                ${q.options.map(opt => `
-                                    <button onclick="checkAnswer('${opt.id}')" ${quizState.answered ? 'disabled' : ''} class="p-6 rounded-2xl border-2 font-black text-left transition-all ${getOptionClass(opt.id, q.correctId)}">
-                                        <div class="flex justify-between items-center">
-                                            ${opt.name}
-                                            ${quizState.answered && opt.id === q.correctId ? '<i class="fa-solid fa-circle-check"></i>' : ''}
-                                            ${quizState.answered && opt.id === quizState.selected && opt.id !== q.correctId ? '<i class="fa-solid fa-circle-xmark"></i>' : ''}
-                                        </div>
-                                    </button>
-                                `).join('')}
-                            </div>
-
-                            ${quizState.answered ? `
-                                <button onclick="nextQuestion()" class="mt-10 w-full bg-slate-950 text-white py-5 rounded-2xl font-black text-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 shadow-lg">
-                                    ${quizState.current + 1 === quizState.questions.length ? 'FINISH ASSESSMENT' : 'NEXT CASE <i class="fa-solid fa-arrow-right"></i>'}
-                                </button>
-                            ` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function getOptionClass(id, correctId) {
-            if (!quizState.answered) return "border-slate-100 hover:border-indigo-500 hover:bg-indigo-50 text-slate-600";
-            if (id === correctId) return "border-emerald-500 bg-emerald-50 text-emerald-700 scale-[1.03] shadow-md z-10";
-            if (id === quizState.selected) return "border-rose-500 bg-rose-50 text-rose-700";
-            return "opacity-30 border-transparent text-slate-400 grayscale";
-        }
-
-        function checkAnswer(id) {
-            quizState.answered = true;
-            quizState.selected = id;
-            if (id === quizState.questions[quizState.current].correctId) quizState.score++;
-            renderQuiz();
-        }
-
-        function nextQuestion() {
-            if (quizState.current + 1 < quizState.questions.length) {
-                quizState.current++;
-                quizState.answered = false;
-                renderQuiz();
-            } else {
-                renderResult();
-            }
-        }
-
-        function renderResult() {
-            const container = document.getElementById('app-content');
-            const percent = Math.round((quizState.score / quizState.questions.length) * 100);
-            container.innerHTML = `
-                <div class="max-w-md mx-auto bg-white rounded-[3rem] shadow-2xl p-12 text-center border border-slate-100">
-                    <div class="w-24 h-24 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center text-5xl mx-auto mb-8 rotate-3 shadow-inner">
-                        <i class="fa-solid fa-award"></i>
-                    </div>
-                    <h2 class="text-4xl font-black text-slate-900 mb-2">Final Evaluation</h2>
-                    <p class="text-slate-400 mb-10 font-medium">Diagnostic accuracy assessment complete.</p>
-                    
-                    <div class="mb-12">
-                        <div class="text-7xl font-black text-indigo-600 mb-2">${percent}%</div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Accuracy Level</p>
-                    </div>
-
-                    <div class="space-y-4">
-                        <button onclick="startQuiz()" class="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black hover:bg-indigo-700 transition shadow-lg shadow-indigo-200">RETAKE QUIZ</button>
-                        <button onclick="showView('landing')" class="w-full bg-slate-100 text-slate-600 py-5 rounded-2xl font-black hover:bg-slate-200 transition">STUDY CENTER</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        window.onload = () => showView('landing');
-    </script>
 </body>
 </html>

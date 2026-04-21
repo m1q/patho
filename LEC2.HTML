@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathology Lecture 2: Osteoarthritis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Quiz Image "Cropping" Effect */
+        .quiz-image-container {
+            position: relative;
+            overflow: hidden;
+            background: #0f172a;
+            border-radius: 1rem;
+            aspect-ratio: 16 / 9;
+        }
+
+        .quiz-zoom-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transform: scale(1.15); 
+            filter: contrast(1.05);
+        }
+
+        .dot-active { background-color: white !important; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <nav class="bg-white border-b sticky top-0 z-30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="showView('landing')">
+                <div class="bg-indigo-600 p-2 rounded-lg text-white">
+                    <i class="fa-solid fa-microscope"></i>
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="font-bold text-lg text-slate-900">PathologyPro</span>
+                    <span class="text-[10px] font-black text-indigo-500 uppercase tracking-tighter">Lecture 2</span>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="showView('study')" class="p-2 px-3 rounded-md hover:bg-slate-100 transition"><i class="fa-solid fa-graduation-cap"></i></button>
+                <button onclick="startQuiz()" class="p-2 px-3 rounded-md hover:bg-slate-100 transition"><i class="fa-solid fa-vial"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="app-content" class="max-w-6xl mx-auto px-4 py-6">
+        <!-- Content Injected Here -->
+    </main>
+
+    <script>
+        const diseaseData = [
+            {
+                id: "lumbar-oa",
+                name: "Lumbar Spine OA",
+                category: "Degenerative Disc Disease",
+                findings: "Narrow disc spaces, osteophytes, facet joint irregularity, disc bulging.",
+                age_group: "Adults / Elderly",
+                locations: "Lumbar spine (L-Spine)",
+                summary_ar: "مقارنة بين الأشعة السينية و MRI في الفقرات القطنية، مع تضيق المسافات بين الأقراص ووجود osteophytes وعدم انتظام المفاصل الوجيهية.",
+                key_points: ["Narrow disc space", "Osteophytes", "Facet arthrosis", "Endplate irregularity"],
+                images: ["IMG_20260421_180528_742.jpg"], // image_01
+                quiz_image: "IMG_20260421_180528_742.jpg"
+            },
+            {
+                id: "knee-medial-oa",
+                name: "Knee OA (Medial)",
+                category: "Joint Space Narrowing",
+                findings: "Medial joint space narrowing, early osteophyte formation.",
+                age_group: "Middle-aged / Elderly",
+                locations: "Medial compartment of the knee",
+                summary_ar: "صورة AP للركبة توضّح تضيق المسافة المفصلية الأنسيّة مع بداية تكوّن osteophytes.",
+                key_points: ["Medial narrowing", "Early bone spurs", "Weight-bearing stress"],
+                images: ["IMG_20260421_180529_486.jpg"], // image_02
+                quiz_image: "IMG_20260421_180529_486.jpg"
+            },
+            {
+                id: "knee-mri-cartilage",
+                name: "Knee MRI (Cartilage Loss)",
+                category: "Soft Tissue Degeneration",
+                findings: "Significant cartilage loss compared to normal side, osteophyte visibility.",
+                age_group: "Adults",
+                locations: "Articular cartilage of the knee",
+                summary_ar: "صورة MRI للركبة تُظهر فقدان الغضروف في جهة مع وجود osteophyte مقارنةً بالجهة الطبيعية.",
+                key_points: ["Cartilage erosion", "MRI modality", "Focal osteophyte"],
+                images: ["IMG_20260421_180529_535.jpg"], // image_03
+                quiz_image: "IMG_20260421_180529_535.jpg"
+            },
+            {
+                id: "hip-oa-cyst",
+                name: "Hip OA (Subcortical Cyst)",
+                category: "Advanced Degeneration",
+                findings: "Subchondral cysts (geodes), large osteophytes, joint space loss.",
+                age_group: "Elderly",
+                locations: "Hip / Pelvis",
+                summary_ar: "صورة لمفصل الورك تُظهر تضيق المفصل مع osteophytes كبيرة ووجود subcortical cyst.",
+                key_points: ["Subchondral cysts", "Large osteophytes", "Hip joint loss"],
+                images: ["IMG_20260421_180528_924.jpg"], // image_05
+                quiz_image: "IMG_20260421_180528_924.jpg"
+            },
+            {
+                id: "tibial-spiking",
+                name: "Tibial Spiking",
+                category: "Radiographic Signs",
+                findings: "Spiking of the tibial eminences, femoral osteophytes.",
+                age_group: "Chronic OA Patients",
+                locations: "Tibial plateau",
+                summary_ar: "صورة AP للركبة تظهر osteophytes في الظنبوب والفخذ مع tibial spiking وتضيّق وعدم انتظام بالمفصل.",
+                key_points: ["Tibial spiking", "Joint irregularity", "Femoral osteophytes"],
+                images: ["IMG_20260421_180529_589.jpg"], // image_06
+                quiz_image: "IMG_20260421_180529_589.jpg"
+            },
+            {
+                id: "hand-oa",
+                name: "Hand Osteoarthritis",
+                category: "Small Joint Disease",
+                findings: "Interphalangeal joint involvement, marginal osteophytes, MCP sparing.",
+                age_group: "Elderly / Post-menopausal",
+                locations: "DIP and PIP joints of the hand",
+                summary_ar: "تغيرات تنكسية واضحة في مفاصل الأصابع خاصة interphalangeal joints مع فقدان المسافة المفصلية وmarginal osteophytes.",
+                key_points: ["DIP/PIP involvement", "Marginal osteophytes", "MCP sparing (usually)"],
+                images: ["IMG_20260421_180529_026.jpg"], // image_08
+                quiz_image: "IMG_20260421_180529_026.jpg"
+            },
+            {
+                id: "tricompartmental-oa",
+                name: "Tricompartmental Knee OA",
+                category: "Severe Osteoarthritis",
+                findings: "Varus deformity, marked narrowing in all compartments, sclerosis.",
+                age_group: "Late-stage patients",
+                locations: "Bilateral knees",
+                summary_ar: "أشعة للركبتين تُظهر severe tricompartmental OA مع تضيق شديد، osteophytes، وsubchondral sclerosis وربما varus deformity.",
+                key_points: ["Varus deformity", "Subchondral sclerosis", "Total joint loss"],
+                images: ["IMG_20260421_180529_606.jpg"], // image_09
+                quiz_image: "IMG_20260421_180529_606.jpg"
+            },
+            {
+                id: "oa-histology",
+                name: "OA Histopathology",
+                category: "Microscopic Findings",
+                findings: "Fibrillation, eburnation, subchondral bone exposure.",
+                age_group: "N/A (Tissue Sample)",
+                locations: "Articular cartilage surface",
+                summary_ar: "هذه الصورة تُظهر الجانب النسيجي والمرضي العياني في OA مثل fibrillation للغضروف وانكشاف subchondral bone ووجود cyst.",
+                key_points: ["Cartilage fibrillation", "Eburnation", "Exposed bone"],
+                images: ["IMG_20260421_180529_241.jpg"], // image_10
+                quiz_image: "IMG_20260421_180529_241.jpg"
+            }
+        ];
+
+        let currentIdx = 0;
+        let quizState = null;
+
+        function showView(view) {
+            const container = document.getElementById('app-content');
+            if (view === 'landing') {
+                container.innerHTML = `
+                    <div class="py-12 flex flex-col items-center">
+                        <div class="mb-12 text-center">
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-[10px] font-black tracking-widest uppercase mb-4 inline-block">Medical Lecture Series</span>
+                            <h1 class="text-5xl font-black text-slate-900 mb-4">Lecture 2: Osteoarthritis</h1>
+                            <p class="text-slate-500 max-w-lg mx-auto">Focused study of OA demographics, radiographic findings, and histopathology across the spine, knee, and hip.</p>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
+                            <div onclick="showView('study')" class="group bg-white p-10 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer">
+                                <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-book"></i>
+                                </div>
+                                <h2 class="text-2xl font-bold mb-2">Review Gallery</h2>
+                                <p class="text-slate-500">Examine full radiographic slides with teaching points and anatomical breakdowns.</p>
+                            </div>
+                            <div onclick="startQuiz()" class="group bg-white p-10 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer">
+                                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-flask-vial"></i>
+                                </div>
+                                <h2 class="text-2xl font-bold mb-2">Diagnostic Challenge</h2>
+                                <p class="text-slate-500">Test your knowledge with cropped images focused only on pathology features.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (view === 'study') {
+                renderStudyView();
+            }
+        }
+
+        function renderStudyView() {
+            const disease = diseaseData[currentIdx];
+            const container = document.getElementById('app-content');
+            container.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Sidebar -->
+                    <div class="lg:col-span-4 space-y-3 max-h-[85vh] overflow-y-auto no-scrollbar pr-1">
+                        <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 px-2">Lecture 2 Contents</div>
+                        ${diseaseData.map((d, i) => `
+                            <button onclick="selectDisease(${i})" class="w-full text-left p-4 rounded-2xl border-2 flex items-center gap-4 transition-all ${currentIdx === i ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg' : 'bg-white border-slate-100 hover:border-indigo-200'}">
+                                <div class="w-12 h-12 bg-slate-100 rounded-xl overflow-hidden shrink-0">
+                                    <img src="${d.quiz_image}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                </div>
+                                <div>
+                                    <div class="font-bold text-sm">${d.name}</div>
+                                    <div class="text-[9px] uppercase font-bold tracking-widest opacity-60">${d.category}</div>
+                                </div>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <!-- Main Viewer -->
+                    <div class="lg:col-span-8">
+                        <div class="bg-white rounded-[2rem] shadow-xl border border-slate-200 overflow-hidden">
+                            <div class="relative group">
+                                <div id="study-track" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar aspect-video bg-slate-950 items-center">
+                                    ${disease.images.map(img => `
+                                        <div class="min-w-full h-full snap-center flex justify-center items-center relative">
+                                            <img src="${img}" class="max-w-full max-h-full object-contain" onerror="handleImageError(this)">
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                ${disease.images.length > 1 ? `
+                                    <button onclick="scrollStudy(-1)" class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white w-12 h-12 rounded-full backdrop-blur-md transition-all flex items-center justify-center">
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                    </button>
+                                    <button onclick="scrollStudy(1)" class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white w-12 h-12 rounded-full backdrop-blur-md transition-all flex items-center justify-center">
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </button>
+                                ` : ''}
+                            </div>
+
+                            <div class="p-8">
+                                <div class="flex justify-between items-start mb-8">
+                                    <div>
+                                        <h2 class="text-3xl font-black text-slate-900">${disease.name}</h2>
+                                        <p class="text-indigo-600 font-bold uppercase tracking-widest text-[10px] mt-2">${disease.category}</p>
+                                    </div>
+                                    <span class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-600">
+                                        Pathology Slide
+                                    </span>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                                    <div class="space-y-6">
+                                        <div class="flex gap-4">
+                                            <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-microscope"></i></div>
+                                            <div>
+                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Imaging Findings</span>
+                                                <p class="text-slate-700 text-sm font-medium leading-relaxed">${disease.findings}</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-4">
+                                            <div class="w-10 h-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center shrink-0"><i class="fa-solid fa-map-pin"></i></div>
+                                            <div>
+                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Body Part</span>
+                                                <p class="text-slate-700 font-medium">${disease.locations}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-slate-900 text-white p-6 rounded-3xl" dir="rtl">
+                                        <div class="flex items-center gap-2 mb-4">
+                                            <div class="w-2 h-6 bg-indigo-500 rounded-full"></div>
+                                            <h4 class="font-bold text-lg">التعليمات التعليمية</h4>
+                                        </div>
+                                        <p class="text-slate-300 text-sm leading-relaxed mb-6">${disease.summary_ar}</p>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            ${disease.key_points.map(kp => `<div class="bg-white/5 p-2 rounded-lg text-[10px] flex items-center gap-2" dir="ltr"><i class="fa-solid fa-circle-dot text-indigo-400"></i> ${kp}</div>`).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function scrollStudy(dir) {
+            const track = document.getElementById('study-track');
+            track.scrollBy({ left: dir * track.offsetWidth, behavior: 'smooth' });
+        }
+
+        function selectDisease(index) {
+            currentIdx = index;
+            renderStudyView();
+        }
+
+        function handleImageError(img) {
+            img.style.display = 'none';
+            const parent = img.parentElement;
+            parent.innerHTML = `
+                <div class="flex flex-col items-center justify-center text-slate-500 gap-3">
+                    <i class="fa-solid fa-image text-3xl opacity-20"></i>
+                    <span class="text-[10px] font-mono opacity-50 uppercase tracking-tighter">${img.src.split('/').pop()}</span>
+                </div>
+            `;
+        }
+
+        function startQuiz() {
+            const shuffled = [...diseaseData].sort(() => 0.5 - Math.random());
+            quizState = {
+                questions: shuffled.map(d => {
+                    const options = [d];
+                    const others = diseaseData.filter(x => x.id !== d.id).sort(() => 0.5 - Math.random()).slice(0, 3);
+                    return {
+                        correctId: d.id,
+                        image: d.quiz_image,
+                        options: [...options, ...others].sort(() => 0.5 - Math.random())
+                    };
+                }),
+                current: 0,
+                score: 0,
+                answered: false
+            };
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const q = quizState.questions[quizState.current];
+            const container = document.getElementById('app-content');
+            container.innerHTML = `
+                <div class="max-w-3xl mx-auto">
+                    <div class="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden">
+                        <div class="h-1.5 bg-slate-100">
+                            <div class="h-full bg-indigo-600 transition-all duration-700" style="width:${((quizState.current + 1) / quizState.questions.length) * 100}%"></div>
+                        </div>
+                        
+                        <div class="p-10">
+                            <div class="flex justify-between items-center mb-8">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Diagnostic Case ${quizState.current + 1} of ${quizState.questions.length}</span>
+                                <div class="px-4 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-black">SCORE: ${quizState.score}</div>
+                            </div>
+
+                            <h3 class="text-2xl font-black text-slate-800 mb-8">Identify the feature from this diagnostic view:</h3>
+
+                            <div class="quiz-image-container mb-10 shadow-2xl ring-4 ring-slate-50">
+                                <img src="${q.image}" class="quiz-zoom-img" onerror="handleImageError(this)">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
+                                <div class="absolute top-4 left-4 bg-indigo-600/60 backdrop-blur-md px-3 py-1 rounded-full text-[9px] text-white font-black uppercase tracking-widest">Diagnostic Zoom (Labels Cropped)</div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                ${q.options.map(opt => `
+                                    <button onclick="checkAnswer('${opt.id}')" ${quizState.answered ? 'disabled' : ''} class="p-6 rounded-2xl border-2 font-black text-left transition-all ${getOptionClass(opt.id, q.correctId)}">
+                                        <div class="flex justify-between items-center">
+                                            ${opt.name}
+                                            ${quizState.answered && opt.id === q.correctId ? '<i class="fa-solid fa-circle-check"></i>' : ''}
+                                            ${quizState.answered && opt.id === quizState.selected && opt.id !== q.correctId ? '<i class="fa-solid fa-circle-xmark"></i>' : ''}
+                                        </div>
+                                    </button>
+                                `).join('')}
+                            </div>
+
+                            ${quizState.answered ? `
+                                <button onclick="nextQuestion()" class="mt-10 w-full bg-slate-950 text-white py-5 rounded-2xl font-black text-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-3 shadow-lg">
+                                    ${quizState.current + 1 === quizState.questions.length ? 'VIEW FINAL RESULTS' : 'NEXT CASE <i class="fa-solid fa-arrow-right"></i>'}
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getOptionClass(id, correctId) {
+            if (!quizState.answered) return "border-slate-100 hover:border-indigo-500 hover:bg-indigo-50 text-slate-600";
+            if (id === correctId) return "border-emerald-500 bg-emerald-50 text-emerald-700 scale-[1.03] shadow-md z-10";
+            if (id === quizState.selected) return "border-rose-500 bg-rose-50 text-rose-700";
+            return "opacity-30 border-transparent text-slate-400 grayscale";
+        }
+
+        function checkAnswer(id) {
+            quizState.answered = true;
+            quizState.selected = id;
+            if (id === quizState.questions[quizState.current].correctId) quizState.score++;
+            renderQuiz();
+        }
+
+        function nextQuestion() {
+            if (quizState.current + 1 < quizState.questions.length) {
+                quizState.current++;
+                quizState.answered = false;
+                renderQuiz();
+            } else {
+                renderResult();
+            }
+        }
+
+        function renderResult() {
+            const container = document.getElementById('app-content');
+            const percent = Math.round((quizState.score / quizState.questions.length) * 100);
+            container.innerHTML = `
+                <div class="max-w-md mx-auto bg-white rounded-[3rem] shadow-2xl p-12 text-center border border-slate-100">
+                    <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-8 shadow-inner">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <h2 class="text-3xl font-black text-slate-900 mb-2">Lecture 2 Assessment</h2>
+                    <p class="text-slate-400 mb-10 font-medium">Diagnostic mastery of Osteoarthritis.</p>
+                    
+                    <div class="mb-12">
+                        <div class="text-7xl font-black text-indigo-600 mb-2">${percent}%</div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Knowledge Accuracy</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <button onclick="startQuiz()" class="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black hover:bg-indigo-700 transition shadow-lg shadow-indigo-200">TRY AGAIN</button>
+                        <button onclick="showView('landing')" class="w-full bg-slate-100 text-slate-600 py-5 rounded-2xl font-black hover:bg-slate-200 transition">BACK TO HOME</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.onload = () => showView('landing');
+    </script>
+</body>
+</html>
